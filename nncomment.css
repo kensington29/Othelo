@@ -1,0 +1,10 @@
+.nnc-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.nnc-comment {
+  position: absolute;
+  white-space: nowrap;
+}
+

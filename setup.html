@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>オセロゲーム設定</title>
+</head>
+<body>
+  <h1>オセロゲーム設定</h1>
+  <div>プレイヤー（黒）: <input type="text" id="b_player"> </div>
+  <div>プレイヤー（白）: <input type="text" id="w_player"> </div>
+  <button id="fixed">決定</button>
+
+
+<!-- JQuery -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- JQuery -->
+
+
+<!--** 以下Firebase **-->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    // add own config 
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  const ref = firebase.database().ref();
+
+
+  document.querySelector('#fixed').onclick=function() {
+    const maxsize = 64;
+    const black = -1;
+    const white = 1;
+    const vacant = 0;
+    let piece_arrange=[];
+    const b_player = $("#b_player").val();
+    console.log(b_player);
+    const w_player = $("#w_player").val();
+    for(let i=0; i<maxsize; i++){
+      if(i ==27 || i==36){
+        piece_arrange[i]=black;
+      }else if(i ==28 || i ==35){
+        piece_arrange[i]=white;
+      }else{
+        piece_arrange[i]=vacant;
+      }
+    }
+    let current_turn=-1;
+
+    const game = {
+        b_player: b_player,
+        w_player: w_player,
+        current_turn: current_turn,
+        piece_arrange: piece_arrange
+      };
+      console.log(game);
+      ref.push(game);
+
+      // winClose();
+      
+    }
+    // 自ウインドウを警告（確認ダイアログ）なしに閉じる
+      function winClose(){
+        open('about:blank', '_self').close();    //一度再表示してからClose
+      }
+
+</script>
+
+</body>
+</html>
