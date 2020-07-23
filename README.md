@@ -1,0 +1,2 @@
+# Othelo
+Othelo game
