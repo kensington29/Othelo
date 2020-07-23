@@ -1,0 +1,48 @@
+/* サイト外枠幅設定 */
+#site_box {
+  position: relative;
+  width:900px;
+  display: flex;
+  flex-wrap: wrap;
+  /* border: 1px solid turquoise; */
+  margin: auto;
+}
+
+#header {
+  width: 100%;
+  margin: auto;
+  display: flex;
+}
+
+#icon{
+  width: 150px;
+  margin: auto;
+}
+
+#logo {
+  width: 100%;
+  margin: 0 0 20px 0;
+}
+
+#logo_title{
+  width: 900px;
+  height: 150px;
+}
+
+#contents{
+  width:100%;
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.content{
+  width:30%;
+  height:200px;
+  margin: 25px 0;
+  box-shadow: 10px 10px 10px grey;
+}
+
+.content_logo{
+  width: 100%;
+}
