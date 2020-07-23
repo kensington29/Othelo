@@ -11,30 +11,14 @@
   <div>プレイヤー（白）: <input type="text" id="w_player"> </div>
   <button id="fixed">決定</button>
 
+  <!-- <h1 id="status">Ajax通信中...</h1> -->
 
-<!-- JQuery -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
-<!--** 以下Firebase **-->
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
 
 <script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    // add own config 
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-
-  const ref = firebase.database().ref();
-
 
   document.querySelector('#fixed').onclick=function() {
     const maxsize = 64;
@@ -43,7 +27,6 @@
     const vacant = 0;
     let piece_arrange=[];
     const b_player = $("#b_player").val();
-    console.log(b_player);
     const w_player = $("#w_player").val();
     for(let i=0; i<maxsize; i++){
       if(i ==27 || i==36){
@@ -62,12 +45,38 @@
         current_turn: current_turn,
         piece_arrange: piece_arrange
       };
-      console.log(game);
-      ref.push(game);
+      let json_game = JSON.stringify(game);
+      // console.log(json_game);
+
+      
+
+    //Ajax（非同期通信）
+    const params = new URLSearchParams();
+    params.append('game',json_game);
+    // params.append('b_player',   b_player);
+    // params.append('w_player', w_player);
+    // params.append('current_turn', current_turn);
+    // params.append('piece_arrange', piece_arrange);
+
+    //axiosでAjax送信
+    axios.post('./insert_game_setup.php',params).then(function (response) {
+        console.log(response.data);//通信OK
+        // response.data：game_id
+        game_id =response.data;
+        window.location.href = "./disp_url.php?json_game="+json_game+"&game_id="+game_id;
+        // document.querySelector("#status").innerHTML="insert_game_setup.php/通信OK";
+    }).catch(function (error) {
+        console.log(error);//通信Error
+    }).then(function () {
+        console.log("Last");//通信OK/Error後に処理を必ずさせたい場合
+    });
 
       // winClose();
       
     }
+
+
+
     // 自ウインドウを警告（確認ダイアログ）なしに閉じる
       function winClose(){
         open('about:blank', '_self').close();    //一度再表示してからClose

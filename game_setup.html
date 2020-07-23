@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>オセロゲーム設定</title>
+</head>
+<body>
+  <h1>オセロゲーム設定</h1>
+  <div>プレイヤー（黒）: <input type="text" name="b_player"> </div>
+  <div>プレイヤー（白）: <input type="text" name="w_player"> </div>
+  <button id="fixed">決定</button>
+
+
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- ajax-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script>
+
+
+  document.querySelector('#fixed').onclick=function() {
+    const maxsize = 64;
+    const black = -1;
+    const white = 1;
+    const vacant = 0;
+    let piece_arrange=[];
+    const b_player = $("#b_player").val();
+    console.log(b_player);
+    const w_player = $("#w_player").val();
+    for(let i=0; i<maxsize; i++){
+      if(i ==27 || i==36){
+        piece_arrange[i]=black;
+      }else if(i ==28 || i ==35){
+        piece_arrange[i]=white;
+      }else{
+        piece_arrange[i]=vacant;
+      }
+    }
+    let current_turn=-1;
+
+    const game = {
+        b_player: b_player,
+        w_player: w_player,
+        current_turn: current_turn,
+        piece_arrange: piece_arrange
+      };
+
+      let json_game = JSON.stringify(game);
+      console.log(game);
+
+      // // ゲーム情報送信要素の追加
+      // let html_input = '<input type="hidden" name="json_game" value= "json_game">';
+      // let sendPlayersInfo = document.getElementsById('send_players_info');
+      // sendPlayersInfo.insertAdjacentHTML('afterbegin',html_input );
+
+      // alert(html_input);
+
+      //submit()でフォームの内容を送信
+      // document.send_info.submit();
+      // ゲーム設定画面へリダイレクト
+      // location.href="./player_info.php";;
+      
+    }
+    // 自ウインドウを警告（確認ダイアログ）なしに閉じる
+      function winClose(){
+        open('about:blank', '_self').close();    //一度再表示してからClose
+      }
+
+</script>
+
+</body>
+</html>
