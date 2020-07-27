@@ -303,8 +303,8 @@ function change_turn(){
       }
       // コマ置きの可否を判断する
       // 縦、横、斜め何か最低１方向で相手のコマと接している、または相手のコマを自身のコマで挟む。
-      let row = math.floor(grid_no/8); // 0 1 2 3 4 5 6 7 
-      let column = grid_no % 8; // 1 2 3 4 5 6 7 0
+      let row = math.floor(grid_no/8); // 行　0 1 2 3 4 5 6 7 
+      let column = grid_no % 8; // 列　1 2 3 4 5 6 7 0
       
       // 左方向の確認
       if(colomun > 2 ){
@@ -326,16 +326,14 @@ function change_turn(){
             }
           }
         }
-        if(row > 2){
-            //******************************ここまで
-
-
+        if(row > 1){
           // １、２行目ではない場合
+          // 左斜め上方向の確認
           if(piece_arrange[grid_no-10] == current_turn * -1){
             //左斜め上が相手のコマ
             let j = grig_no-9*2;
             // 左斜め２つ上から１列目、もしくは１行目まで確認
-            while((j > 0) && ((j % 8) == 1)){
+            while((j > 0) && ((j % 8) !=0)){
               // １行目、または１列目となるまで確認
               if(piece_arrange[j-1] == vacant){
               // 自分のコマが見つかる前に空きグリッドとなったら左斜め上方向の確認を終了
@@ -350,13 +348,14 @@ function change_turn(){
             }
           }
         }
-        if(grid_no < 48){
+        if(row < 6){
           // 7、8行目ではない場合
+          // 左斜め下方向の確認
           if(piece_arrange[grid_no+7] == current_turn * -1){
             //左斜め下が相手のコマ
             let j = grig_no+7*2;
-            // 左斜め２つ上から１列目、もしくは１行目まで確認
-            while((j < 65) && ((j % 8)>0)){
+            // 左斜め２つ下から１列目、もしくは８行目まで確認
+            while((j < 65) && ((j % 8) != 0)){
               // 8行目、または１列目となるまで確認
               if(piece_arrange[j-1] == vacant){
                 // 自分のコマが見つかる前に空きグリッドとなったら左斜め下方向の確認を終了
@@ -365,7 +364,7 @@ function change_turn(){
                 // 自分のコマが見つかったらtrueを返して関数処理終了
                 return true;
               }else{
-                // 左斜め下上へ（インデックスを７加算）
+                // 左斜め下へ（インデックスを７加算）
                 j += 7 ;
               }
             }
@@ -373,8 +372,9 @@ function change_turn(){
         }
       }
 
-      if(grid_no > 16){
+      if(row > 1){
         // １、２行目ではない場合
+        // 上方向の確認
         if(piece_arrange[grid_no-9] == current_turn * -1){
           // １行上に相手のコマ
           let j = grid_no - 16;
@@ -387,18 +387,19 @@ function change_turn(){
               // 自分のコマが見つかったらtrueを返して関数処理終了
               return true;
             }else{
-              左隣のグリッドのインデックスへ
+              上のグリッドのインデックスへ
               j -= 8 ;
             }
           }
         }
       }
       
-      if(grid_no < 48){
+      if(row < 6){
         // 7、8行目ではない場合
+        //下方向の確認
         if(piece_arrange[grid_no+7] == current_turn * -1){
           // １行下に相手のコマ
-          let j = grid_no + 15;
+          let j = grid_no + 16;
           while(j > 0){
             // 同じ行列を２つ下から8行目まで確認
             if(piece_arrange[j-1] == vacant){
@@ -408,40 +409,42 @@ function change_turn(){
               // 自分のコマが見つかったらtrueを返して関数処理終了
               return true;
             }else{
-              左隣のグリッドのインデックスへ
+              下のグリッドのインデックスへ
               j += 8 ;
             }
           }
         }
       }
 
-      if(grig_no % 8 < 6 ){
+     // 右方向の確認
+      if((colomun != 7) && (column != 0) ){
         // 7、8列目ではない場合
         if(piece_arrange[grid_no] == current_turn * -1){
           // 右隣が相手のコマ
-          let j = grid_no+2;
-          while ( math.floor(j / 8) == math.floor(grid_no / 8)){
+          let j = colomun+2; //確認する列
+          while ( j != 1){
             // 同じ行を２つ隣から左端まで確認
-            if(piece_arrange[j-1] == vacant){
+            if(piece_arrange[grig_no-(colomun-j)-1] == vacant){
               // 自分のコマが見つかる前に空きグリッドとなったら左横方向の確認を終了
               brake;
-            }else if(piece_arrange[j-1] == current_turn){
+            }else if(piece_arrange[grig_no-(colomun-j)-1] == current_turn){
               // 自分のコマが見つかったらtrueを返して関数処理終了
               return true;
             }else{
-              左隣のグリッドのインデックスへ
+              //左隣の列へ
               j++ ;
             }
           }
         }
-        if(grid_no > 16){
+        if(row > 1){
           // １、２行目ではない場合
+          // 右斜め上方向の確認
           if(piece_arrange[grid_no-8] == current_turn * -1){
             //右斜め上が相手のコマ
             let j = grig_no-7*2;
             // 右斜め２つ上から８列目、もしくは１行目まで確認
-            while((j > 0) && ((j % 8) == 0)){
-              // １行目、または８列目となるまで確認
+            while((j > 0) && ((j % 8) !=1)){
+              // １行目、または１列目となるまで確認
               if(piece_arrange[j-1] == vacant){
               // 自分のコマが見つかる前に空きグリッドとなったら左斜め上方向の確認を終了
               brake;
@@ -449,19 +452,20 @@ function change_turn(){
                 // 自分のコマが見つかったらtrueを返して関数処理終了
                 return true;
               }else{
-                // 左斜め上へ（インデックスを９減算）
-                j -= 9 ;
+                // 右斜め上へ（インデックスを７減算）
+                j -= 7 ;
               }
             }
           }
         }
-        if(grid_no < 48){
+        if(row < 6){
           // 7、8行目ではない場合
-          if(piece_arrange[grid_no+7] == current_turn * -1){
-            //左斜め下が相手のコマ
-            let j = grig_no+7*2;
-            // 左斜め２つ上から１列目、もしくは１行目まで確認
-            while((j < 65) && ((j % 8)>0)){
+          // 右斜め下方向の確認
+          if(piece_arrange[grid_no+8] == current_turn * -1){
+            //右斜め下が相手のコマ
+            let j = grig_no+9*2;
+            // 右斜め２つ下から８列目、もしくは８行目まで確認
+            while((j < 65) && ((j % 8) != 1)){
               // 8行目、または１列目となるまで確認
               if(piece_arrange[j-1] == vacant){
                 // 自分のコマが見つかる前に空きグリッドとなったら左斜め下方向の確認を終了
@@ -470,8 +474,8 @@ function change_turn(){
                 // 自分のコマが見つかったらtrueを返して関数処理終了
                 return true;
               }else{
-                // 左斜め下上へ（インデックスを７加算）
-                j += 7 ;
+                // 右斜め下へ（インデックスを９加算）
+                j += 9 ;
               }
             }
           }
